@@ -1,33 +1,63 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
+val groupName: String by project
+val currentVersion: String by project
+
 plugins {
 	kotlin("jvm") version "1.9.25"
+	kotlin("plugin.jpa") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
 	id("org.springframework.boot") version "3.3.10"
 	id("io.spring.dependency-management") version "1.1.7"
-	kotlin("plugin.jpa") version "1.9.25"
 }
 
-group = "jobterview"
-version = "0.0.1-SNAPSHOT"
+allprojects {
+	group = groupName
+	version = currentVersion
 
-java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
+	repositories {
+		mavenCentral()
 	}
 }
 
-repositories {
-	mavenCentral()
-}
+subprojects {
+	apply(plugin = "java-library")
+	apply(plugin = "kotlin")
+	apply(plugin = "kotlin-allopen")
+	apply(plugin = "kotlin-spring")
+	apply(plugin = "org.springframework.boot")
+	apply(plugin = "io.spring.dependency-management")
 
-dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
-	runtimeOnly("org.postgresql:postgresql")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	dependencies {
+		implementation("org.springframework.boot:spring-boot-starter")
+
+		implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+		implementation("org.jetbrains.kotlin:kotlin-reflect")
+	}
+
+	tasks.withType<JavaCompile> {
+		sourceCompatibility = "21"
+		targetCompatibility = "21"
+	}
+
+	tasks.withType<KotlinCompile> {
+		kotlinOptions {
+			jvmTarget = "21"
+			freeCompilerArgs.plus("-Xjsr305=strict")
+			freeCompilerArgs.plus("-Xjvm-default=enable")
+			freeCompilerArgs.plus("-progressive")
+			freeCompilerArgs.plus("-XXLanguage:+InlineClasses")
+		}
+	}
+
+	tasks.withType<Jar> {
+		enabled = true
+	}
+
+	tasks.withType<BootJar> {
+		enabled = false
+	}
 }
 
 kotlin {
@@ -37,11 +67,10 @@ kotlin {
 }
 
 allOpen {
+	annotation("org.springframework.context.annotation.Configuration")
+	annotation("org.springframework.boot.autoconfigure.SpringBootApplication")
 	annotation("jakarta.persistence.Entity")
 	annotation("jakarta.persistence.MappedSuperclass")
 	annotation("jakarta.persistence.Embeddable")
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
-}
