@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Jobterview 인증 메일</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Helvetica Neue', sans-serif; background-color: #f0f4f8;">
+<div style="max-width: 480px; margin: 40px auto; background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.06);">
+
+    <h1 style="margin: 0 0 24px; font-size: 26px; color: #1971c2; text-align: center;">Jobterview 인증 요청</h1>
+
+    <p style="font-size: 16px; color: #343a40; text-align: center;">
+        아래의 인증 코드를 입력하여 이메일 주소를 인증해주세요.
+    </p>
+
+    <div style="margin: 32px 0; text-align: center;">
+        <span style="display: inline-block; background-color: #d0ebff; color: #212529; font-size: 28px; font-weight: bold; padding: 16px 32px; border-radius: 8px;">
+          <span th:text="${code}">123456</span>
+        </span>
+    </div>
+
+    <p style="font-size: 14px; color: #868e96; text-align: center;">
+        이 메일은 Jobterview에서 회원가입 또는 구독 인증을 위해 발송되었습니다.
+        <br />
+        요청하지 않은 메일이라면 무시하셔도 됩니다.
+    </p>
+
+    <div style="margin-top: 30px; text-align: center; font-size: 13px; color: #adb5bd;">
+        ⓒ 2025 Jobterview. All rights reserved.
+    </div>
+</div>
+</body>
+</html>

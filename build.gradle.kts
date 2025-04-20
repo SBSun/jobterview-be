@@ -6,6 +6,7 @@ val currentVersion: String by project
 
 plugins {
 	kotlin("jvm") version "1.9.25"
+	kotlin("plugin.allopen") version "1.9.25"
 	kotlin("plugin.jpa") version "1.9.25"
 	kotlin("plugin.spring") version "1.9.25"
 	id("org.springframework.boot") version "3.3.10"
@@ -26,6 +27,7 @@ subprojects {
 	apply(plugin = "kotlin")
 	apply(plugin = "kotlin-allopen")
 	apply(plugin = "kotlin-noarg")
+	apply(plugin = "kotlin-spring")
 	apply(plugin = "org.springframework.boot")
 	apply(plugin = "io.spring.dependency-management")
 

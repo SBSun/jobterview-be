@@ -8,6 +8,7 @@ import java.time.LocalDateTime
 
 @MappedSuperclass
 abstract class CreatedTimeEntity : AuditingEntity() {
+
     @CreatedDate
     @Column(name = "created_at")
     @Comment("등록일시")
