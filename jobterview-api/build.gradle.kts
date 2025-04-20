@@ -10,6 +10,11 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+allOpen {
+    annotation("org.springframework.context.annotation.Configuration")
+    annotation("org.springframework.boot.context.properties.ConfigurationProperties")
+}
+
 tasks.test {
     useJUnitPlatform()
 }

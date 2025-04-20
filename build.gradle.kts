@@ -25,7 +25,7 @@ subprojects {
 	apply(plugin = "java-library")
 	apply(plugin = "kotlin")
 	apply(plugin = "kotlin-allopen")
-	apply(plugin = "kotlin-spring")
+	apply(plugin = "kotlin-noarg")
 	apply(plugin = "org.springframework.boot")
 	apply(plugin = "io.spring.dependency-management")
 
@@ -65,12 +65,3 @@ kotlin {
 		freeCompilerArgs.addAll("-Xjsr305=strict")
 	}
 }
-
-allOpen {
-	annotation("org.springframework.context.annotation.Configuration")
-	annotation("org.springframework.boot.autoconfigure.SpringBootApplication")
-	annotation("jakarta.persistence.Entity")
-	annotation("jakarta.persistence.MappedSuperclass")
-	annotation("jakarta.persistence.Embeddable")
-}
-
