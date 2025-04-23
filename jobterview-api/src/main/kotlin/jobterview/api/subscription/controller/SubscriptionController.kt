@@ -1,5 +1,6 @@
 package jobterview.api.subscription.controller
 
+import jobterview.api.subscription.request.SubscriptRequest
 import jobterview.api.subscription.request.VerifyEmailRequest
 import jobterview.api.subscription.service.SubscriptionService
 import org.springframework.http.HttpStatus
@@ -18,6 +19,13 @@ class SubscriptionController (
     @PostMapping("/verify/send")
     fun sendVerifyEmail(@RequestBody request: VerifyEmailRequest): ResponseEntity<Void> {
         subscriptionService.sendVerifyEmail(request.email)
+
+        return ResponseEntity.status(HttpStatus.OK).build()
+    }
+
+    @PostMapping
+    fun subscript(@RequestBody request: SubscriptRequest): ResponseEntity<Void> {
+        subscriptionService.subscript(request)
 
         return ResponseEntity.status(HttpStatus.OK).build()
     }

@@ -39,4 +39,10 @@ class MailVerification (
     @Column(name = "expired_at", nullable = false)
     @Comment("만료일시")
     val expiredAt: LocalDateTime
-): CreatedTimeEntity()
+): CreatedTimeEntity() {
+
+    fun verified() {
+        isVerified = true
+        verifiedAt = LocalDateTime.now()
+    }
+}
