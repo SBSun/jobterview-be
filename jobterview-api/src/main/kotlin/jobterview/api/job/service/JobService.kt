@@ -1,10 +1,11 @@
 package jobterview.api.job.service
 
 import jobterview.domain.job.Job
+import jobterview.domain.job.exception.JobException
 import jobterview.domain.job.repository.JobJpaRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
+import java.util.*
 
 @Service
 @Transactional(readOnly = true)
@@ -14,6 +15,6 @@ class JobService (
 
     fun getById(id: UUID): Job {
         return jobRepository.findById(id)
-            .orElseThrow { IllegalArgumentException("존재하지 않는 Job입니다.") }
+            .orElseThrow { JobException.notFound() }
     }
 }
