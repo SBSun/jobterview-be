@@ -10,6 +10,7 @@ class MailSender (
     private val mailSender: JavaMailSender,
     private val mailSendRepository: MailSendHistoryJpaRepository
 ) {
+
     fun sendMail(to: String, subject: String, text: String) {
         try {
             val message = mailSender.createMimeMessage()

@@ -12,6 +12,7 @@ import java.util.*
 @Table(name = "mail_send_history")
 @Comment("메일 발송 이력")
 class MailSendHistory (
+
     @Id
     @Column(updatable = false, nullable = false)
     val id: UUID = Generators.timeBasedEpochGenerator().generate(),
