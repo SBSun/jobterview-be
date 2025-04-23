@@ -5,6 +5,7 @@ import jobterview.api.mail.MailSender
 import jobterview.api.mail.template.VerifyMailTemplate
 import jobterview.api.subscription.request.SubscriptRequest
 import jobterview.domain.mail.MailVerification
+import jobterview.domain.mail.exception.MailVerificationException
 import jobterview.domain.mail.repository.MailVerificationJpaRepository
 import jobterview.domain.subscription.Subscription
 import jobterview.domain.subscription.repository.SubscriptionJpaRepository
@@ -52,16 +53,16 @@ class SubscriptionService (
 
     private fun verify(email: String, code: String) {
         val mailVerification = mailVerificationRepository.findTopByEmailOrderByCreatedAtDesc(email)
-            .orElseThrow { IllegalArgumentException("유효하지 않은 인증 정보입니다.") }
+            .orElseThrow { MailVerificationException.invalid() }
 
-        if (!mailVerification.isVerified || mailVerification.expiredAt.isBefore(LocalDateTime.now())) {
-            throw IllegalArgumentException("만료된 인증 정보입니다.")
+        if (mailVerification.isVerified || mailVerification.expiredAt.isBefore(LocalDateTime.now())) {
+            throw MailVerificationException.expired()
         }
 
         if (mailVerification.verifyCode == code) {
             mailVerification.verified()
         } else {
-            throw IllegalArgumentException("인증 코드가 일치하지 않습니다.")
+            throw MailVerificationException.mismatch()
         }
     }
 
