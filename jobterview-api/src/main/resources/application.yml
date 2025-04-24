@@ -20,3 +20,11 @@ spring:
           timeout: 10000
           starttls:
             enable: true
+
+springdoc:
+  swagger-ui:
+    path: /docs
+    tags-sorter: alpha
+    operations-sorter: alpha
+    doc-expansion: none
+    default-models-expand-depth: 1
