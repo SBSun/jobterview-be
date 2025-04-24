@@ -1,5 +1,8 @@
+plugins {
+    id("application-conventions")
+}
+
 dependencies {
-    implementation(project(":jobterview-common"))
     implementation(project(":jobterview-domain"))
 
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -8,17 +11,4 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
     implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
-
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-}
-
-allOpen {
-    annotation("org.springframework.context.annotation.Configuration")
-    annotation("org.springframework.boot.context.properties.ConfigurationProperties")
-}
-
-tasks.test {
-    useJUnitPlatform()
 }
