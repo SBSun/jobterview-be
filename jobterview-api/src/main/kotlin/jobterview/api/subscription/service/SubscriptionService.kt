@@ -1,14 +1,14 @@
 package jobterview.api.subscription.service
 
 import jobterview.api.job.service.JobService
-import jobterview.api.mail.MailSender
-import jobterview.api.mail.template.VerifyMailTemplate
 import jobterview.api.subscription.request.SubscriptRequest
 import jobterview.domain.mail.MailVerification
 import jobterview.domain.mail.exception.MailVerificationException
 import jobterview.domain.mail.repository.MailVerificationJpaRepository
 import jobterview.domain.subscription.Subscription
 import jobterview.domain.subscription.repository.SubscriptionJpaRepository
+import jobterview.mail.MailSender
+import jobterview.mail.template.VerifyMailTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.security.SecureRandom

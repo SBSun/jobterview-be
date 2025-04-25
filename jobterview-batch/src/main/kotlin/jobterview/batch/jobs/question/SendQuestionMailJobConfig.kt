@@ -1,9 +1,9 @@
 package jobterview.batch.jobs.question
 
-import jobterview.batch.mail.MailSender
 import jobterview.domain.question.repository.QuestionJpaRepository
 import jobterview.domain.subscription.Subscription
 import jobterview.domain.subscription.repository.SubscriptionJpaRepository
+import jobterview.mail.MailSender
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.job.builder.JobBuilder
