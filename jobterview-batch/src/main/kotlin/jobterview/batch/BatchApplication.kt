@@ -5,7 +5,7 @@ import org.springframework.boot.runApplication
 import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootApplication(
-    scanBasePackages = ["jobterview.batch", "jobterview.domain"],
+    scanBasePackages = ["jobterview.batch", "jobterview.domain", "jobterview.mail", "jobterview.common"],
 )
 @EnableScheduling
 class BatchApplication

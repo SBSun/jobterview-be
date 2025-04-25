@@ -1,16 +1,16 @@
-package jobterview.batch.mail
+package jobterview.mail
 
-import jobterview.domain.mail.repository.MailSendHistoryJpaRepository
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
 
-@Component("questionMailSender")
-class MailSender (
+@Component("emailSender")
+class MailSender(
     private val mailSender: JavaMailSender,
-    private val mailSendRepository: MailSendHistoryJpaRepository
 ) {
 
+    @Async("mailExecutor")
     fun sendMail(to: String, subject: String, text: String) {
         try {
             val message = mailSender.createMimeMessage()
@@ -18,7 +18,7 @@ class MailSender (
 
             helper.setTo(to)
             helper.setSubject(subject)
-            helper.setText(text)
+            helper.setText(text, true)
 
             mailSender.send(message)
         } catch (e: Exception) {
