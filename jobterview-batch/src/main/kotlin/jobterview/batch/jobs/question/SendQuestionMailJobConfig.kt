@@ -4,6 +4,7 @@ import jobterview.domain.question.repository.QuestionJpaRepository
 import jobterview.domain.subscription.Subscription
 import jobterview.domain.subscription.repository.SubscriptionJpaRepository
 import jobterview.mail.MailSender
+import jobterview.mail.template.QuestionMailTemplate
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.Step
 import org.springframework.batch.core.job.builder.JobBuilder
@@ -20,6 +21,7 @@ class SendQuestionMailJobConfig (
     private val jobRepository: JobRepository,
     private val transactionManager: PlatformTransactionManager,
     private val mailSender: MailSender,
+    private val questionMailTemplate: QuestionMailTemplate,
     private val subscriptionRepository: SubscriptionJpaRepository,
     private val questionRepository: QuestionJpaRepository
 ){
@@ -52,7 +54,7 @@ class SendQuestionMailJobConfig (
 
                 val to = subscription.email
                 val subject = "오늘의 면접 질문"
-                val text = "면접 질문 내용: ${question.content}"
+                val text = questionMailTemplate.render(mapOf("question" to question.content))
 
                 mailSender.sendMail(to, subject, text)
 

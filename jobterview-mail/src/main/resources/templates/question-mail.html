@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Jobterview 오늘의 면접 질문</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Helvetica Neue', sans-serif; background-color: #f0f4f8;">
+<div style="max-width: 480px; margin: 40px auto; background-color: #ffffff; padding: 40px; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.06);">
+
+    <h1 style="margin: 0 0 24px; font-size: 24px; color: #1971c2; text-align: center;">오늘의 면접 질문 🎯</h1>
+
+    <p style="font-size: 16px; color: #343a40; text-align: center;">
+        아래의 질문에 답변을 작성하고 피드백도 받아보세요.
+    </p>
+
+    <div style="
+    margin: 32px 0;
+    background-color: #e7f5ff;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #212529;
+    word-wrap: break-word;">
+        <span th:text="${question}">팀 프로젝트에서 갈등이 발생했을 때 어떻게 대처했는지 설명해주세요.</span>
+    </div>
+
+    <div style="text-align: center; margin: 30px 0;">
+        <a th:href="@{https://jobterview.site/interview/submit(token=${token})}"
+           style="display: inline-block; background-color: #1971c2; color: white; padding: 14px 28px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+            👉 답변하러 가기
+        </a>
+    </div>
+
+    <p style="font-size: 13px; color: #868e96; text-align: center;">
+        이 메일은 Jobterview 질문 구독 설정에 따라 발송되었습니다.
+        <br />
+        <a th:href="@{https://jobterview.site/unsubscribe(email=${email})}" style="color: #868e96; text-decoration: underline;">구독 해지하기</a>
+    </p>
+
+    <div style="margin-top: 30px; text-align: center; font-size: 12px; color: #adb5bd;">
+        ⓒ 2025 Jobterview. All rights reserved.
+    </div>
+</div>
+</body>
+</html>

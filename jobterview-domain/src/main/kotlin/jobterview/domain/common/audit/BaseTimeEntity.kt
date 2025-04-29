@@ -11,13 +11,13 @@ import java.time.LocalDateTime
 abstract class BaseTimeEntity : AuditingEntity() {
 
     @CreatedDate
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     @Comment("등록일시")
     lateinit var createdAt: LocalDateTime
         protected set
 
     @LastModifiedDate
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     @Comment("수정일시")
     lateinit var updatedAt: LocalDateTime
         protected set
