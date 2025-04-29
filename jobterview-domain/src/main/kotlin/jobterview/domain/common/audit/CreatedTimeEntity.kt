@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 abstract class CreatedTimeEntity : AuditingEntity() {
 
     @CreatedDate
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     @Comment("등록일시")
     lateinit var createdAt: LocalDateTime
         protected set
