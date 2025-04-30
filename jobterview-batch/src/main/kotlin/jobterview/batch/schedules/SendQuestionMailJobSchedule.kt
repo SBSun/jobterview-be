@@ -12,8 +12,7 @@ class SendQuestionMailJobSchedule(
     private val sendQuestionMailJob: Job
 ) {
 
-//    @Scheduled(cron = "0 0 7 * * ?")
-    @Scheduled(fixedDelay = 1000000)
+    @Scheduled(cron = "0 0 7 * * ?")
     fun run() {
         val jobParameters = JobParametersBuilder()
             .addLong("timestamp", System.currentTimeMillis())
