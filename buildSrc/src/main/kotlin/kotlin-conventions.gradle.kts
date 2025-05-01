@@ -42,9 +42,19 @@ tasks.withType<BootJar> {
     enabled = false
 }
 
+tasks.withType<Test> {
+//    failFast = true
+
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("io.kotest:kotest-runner-junit5-jvm:5.9.0")
+    testImplementation("io.kotest:kotest-assertions-core-jvm:5.9.0")
+    testImplementation("io.kotest:kotest-property-jvm:5.9.0")
+    testImplementation("io.kotest:kotest-framework-datatest-jvm:5.9.0")
+    testImplementation("io.mockk:mockk:1.13.10")
 }
