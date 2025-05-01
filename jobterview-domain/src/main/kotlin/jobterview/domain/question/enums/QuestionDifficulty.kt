@@ -1,6 +1,8 @@
 package jobterview.domain.question.enums
 
-enum class QuestionDifficulty(val code: String) {
+import jobterview.domain.common.enums.Codable
+
+enum class QuestionDifficulty(override val code: String): Codable {
     EASY("easy"),
     MEDIUM("medium"),
     HARD("hard")
