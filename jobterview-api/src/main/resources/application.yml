@@ -4,6 +4,7 @@ spring:
     group:
       local:
         - domain
+        - security
 
   config:
     import: optional:classpath:env/env.properties
@@ -28,3 +29,7 @@ springdoc:
     operations-sorter: alpha
     doc-expansion: none
     default-models-expand-depth: 1
+
+logging:
+  level:
+    org.springframework.security: DEBUG

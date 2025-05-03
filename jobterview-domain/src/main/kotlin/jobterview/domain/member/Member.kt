@@ -1,11 +1,10 @@
 package jobterview.domain.member
 
 import com.fasterxml.uuid.Generators
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import jobterview.domain.common.audit.BaseTimeEntity
+import jobterview.domain.member.enums.ProviderType
+import jobterview.domain.member.enums.ProviderTypeEnumConverter
 import org.hibernate.annotations.Comment
 import java.time.LocalDateTime
 import java.util.*
@@ -18,6 +17,13 @@ class Member (
     @Id
     @Column(updatable = false, nullable = false)
     val id: UUID = Generators.timeBasedEpochGenerator().generate(),
+
+    @Convert(converter = ProviderTypeEnumConverter::class)
+    @Column(name = "provider", nullable = false)
+    val provider: ProviderType,
+
+    @Column(nullable = false, unique = true)
+    var providerId: String,
 
     @Column(nullable = false, unique = true)
     @Comment("이메일")

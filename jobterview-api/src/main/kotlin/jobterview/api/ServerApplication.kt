@@ -6,7 +6,7 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Import
 
 @SpringBootApplication(
-    scanBasePackages = ["jobterview.api", "jobterview.domain", "jobterview.mail", "jobterview.common"],
+    scanBasePackages = ["jobterview.api", "jobterview.domain", "jobterview.mail", "jobterview.security", "jobterview.common"],
 )
 @Import(MailAsyncConfig::class)
 class ServerApplication
