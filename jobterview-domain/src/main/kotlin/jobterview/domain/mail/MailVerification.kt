@@ -7,7 +7,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import jobterview.domain.common.audit.CreatedTimeEntity
 import org.hibernate.annotations.Comment
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -23,6 +22,10 @@ class MailVerification (
     @Column(nullable = false)
     @Comment("이메일")
     val email: String,
+
+    @Column(nullable = false)
+    @Comment("직업 ID")
+    val jobId: UUID,
 
     @Column(name = "verify_code", nullable = false)
     @Comment("인증 코드")

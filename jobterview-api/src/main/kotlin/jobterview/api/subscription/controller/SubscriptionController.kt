@@ -20,7 +20,7 @@ class SubscriptionController (
     @Operation(summary = "구독 인증 메일 발송")
     @PostMapping("/verify/send")
     fun sendVerifyEmail(@RequestBody request: VerifyEmailRequest) {
-        subscriptionService.sendVerifyEmail(request.email)
+        subscriptionService.sendVerifyEmail(request)
     }
 
     @Operation(summary = "구독 요청")

@@ -6,5 +6,5 @@ import java.util.*
 
 interface SubscriptionJpaRepository : JpaRepository<Subscription, UUID> {
 
-    fun findFirstByOrderByCreatedAtDesc(): Subscription?
+    fun existsByEmailAndJob_Id(email: String, jobId: UUID): Boolean
 }
