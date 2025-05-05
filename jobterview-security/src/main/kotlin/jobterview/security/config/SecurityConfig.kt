@@ -44,7 +44,7 @@ class SecurityConfig (
             .cors {
                 it.configurationSource { req ->
                     CorsConfiguration().apply {
-                        allowedOrigins = listOf("*")
+                        allowedOrigins = listOf("http://localhost:3000")
                         allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         allowedHeaders = listOf("*")
                         allowCredentials = true
