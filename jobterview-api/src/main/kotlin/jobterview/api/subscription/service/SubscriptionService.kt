@@ -2,10 +2,12 @@ package jobterview.api.subscription.service
 
 import jobterview.api.job.service.JobService
 import jobterview.api.subscription.request.SubscriptRequest
+import jobterview.api.subscription.request.VerifyEmailRequest
 import jobterview.domain.mail.MailVerification
 import jobterview.domain.mail.exception.MailVerificationException
 import jobterview.domain.mail.repository.MailVerificationJpaRepository
 import jobterview.domain.subscription.Subscription
+import jobterview.domain.subscription.exception.SubscriptionException
 import jobterview.domain.subscription.repository.SubscriptionJpaRepository
 import jobterview.mail.MailSender
 import jobterview.mail.template.VerifyMailTemplate
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.security.SecureRandom
 import java.time.LocalDateTime
+import java.util.*
 
 
 @Service
@@ -25,15 +28,21 @@ class SubscriptionService (
     private val jobService: JobService
 ){
 
-    fun sendVerifyEmail(email: String) {
+    fun sendVerifyEmail(request: VerifyEmailRequest) {
+        jobService.verifyExist(request.jobId)
+        if (subscriptionRepository.existsByEmailAndJob_Id(request.email, request.jobId)) {
+            throw SubscriptionException.alreadySubscribed()
+        }
+
         val subject = "이메일을 인증해주세요."
         val code = generateVerifyCode()
         val text = verifyMailTemplate.render(mapOf("code" to code))
 
-        mailSender.sendMail(email, subject, text)
+        mailSender.sendMail(request.email, subject, text)
 
         val mailVerification = MailVerification(
-            email = email,
+            email = request.email,
+            jobId = request.jobId,
             verifyCode = code,
             expiredAt = LocalDateTime.now().plusMinutes(5)
         )
@@ -41,7 +50,7 @@ class SubscriptionService (
     }
 
     fun subscript(request: SubscriptRequest) {
-        verify(request.email, request.code)
+        verifyCode(request.email, request.jobId, request.code)
 
         val subscription = Subscription(
             email = request.email,
@@ -51,8 +60,8 @@ class SubscriptionService (
         subscriptionRepository.save(subscription)
     }
 
-    private fun verify(email: String, code: String) {
-        val mailVerification = mailVerificationRepository.findTopByEmailOrderByCreatedAtDesc(email)
+    private fun verifyCode(email: String, jobId: UUID, code: String) {
+        val mailVerification = mailVerificationRepository.findTopByEmailAndJobIdOrderByCreatedAtDesc(email, jobId)
             .orElseThrow { MailVerificationException.invalid() }
 
         if (mailVerification.isVerified || mailVerification.expiredAt.isBefore(LocalDateTime.now())) {

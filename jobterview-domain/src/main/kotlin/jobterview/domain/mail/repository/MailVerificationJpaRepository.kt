@@ -6,5 +6,5 @@ import java.util.*
 
 interface MailVerificationJpaRepository : JpaRepository<MailVerification, UUID> {
 
-    fun findTopByEmailOrderByCreatedAtDesc(email: String): Optional<MailVerification>
+    fun findTopByEmailAndJobIdOrderByCreatedAtDesc(email: String, jobId: UUID): Optional<MailVerification>
 }

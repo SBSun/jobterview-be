@@ -25,4 +25,11 @@ class JobService (
             .map { JobResponse(it) }
             .sortedBy { it.position }
     }
+
+    @Transactional(readOnly = true)
+    fun verifyExist(id: UUID) {
+        if (!jobRepository.existsById(id)) {
+            throw JobException.notFound()
+        }
+    }
 }
