@@ -18,9 +18,9 @@ class QuestionController(
     private val questionService: QuestionService
 ){
 
-    @Operation(summary = "면접 질문 조회")
+    @Operation(summary = "직업별 면접 질문 조회")
     @GetMapping
-    fun sendVerifyEmail(@RequestParam jobId: UUID): ApiResponse<List<QuestionResponse>> {
+    fun getQuestionsByJob(@RequestParam jobId: UUID): ApiResponse<List<QuestionResponse>> {
         return ApiResponse.create(questionService.getQuestionsByJob(jobId))
     }
 }
