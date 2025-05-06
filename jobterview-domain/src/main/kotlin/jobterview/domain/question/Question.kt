@@ -3,7 +3,6 @@ package jobterview.domain.question
 import com.fasterxml.uuid.Generators
 import jakarta.persistence.*
 import jobterview.domain.common.audit.CreatedTimeEntity
-import jobterview.domain.job.Job
 import jobterview.domain.question.enums.QuestionDifficulty
 import jobterview.domain.question.enums.QuestionDifficultyEnumConverter
 import org.hibernate.annotations.Comment
@@ -17,6 +16,10 @@ class Question (
     @Column(updatable = false, nullable = false)
     val id: UUID = Generators.timeBasedEpochGenerator().generate(),
 
+    @Column(nullable = false)
+    @Comment("직업 ID")
+    val jobId: UUID,
+
     @Column(columnDefinition = "text", nullable = false)
     @Comment("질문")
     var content: String,
@@ -28,8 +31,4 @@ class Question (
     @Column(columnDefinition = "text", nullable = false)
     @Comment("답변")
     var answer: String,
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id")
-    val job: Job,
 ): CreatedTimeEntity()

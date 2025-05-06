@@ -6,5 +6,4 @@ import java.util.*
 
 interface QuestionJpaRepository : JpaRepository<Question, UUID> {
 
-    fun findAllByJob_Id(jobId: UUID): List<Question>
 }
