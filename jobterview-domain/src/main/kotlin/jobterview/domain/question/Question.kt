@@ -17,13 +17,17 @@ class Question (
     @Column(updatable = false, nullable = false)
     val id: UUID = Generators.timeBasedEpochGenerator().generate(),
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "text", nullable = false)
     @Comment("질문")
     var content: String,
 
     @Convert(converter = QuestionDifficultyEnumConverter::class)
     @Column(nullable = false)
     val difficulty: QuestionDifficulty,
+
+    @Column(columnDefinition = "text", nullable = false)
+    @Comment("답변")
+    var answer: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")
