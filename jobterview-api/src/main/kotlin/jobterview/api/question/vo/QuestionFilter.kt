@@ -6,4 +6,5 @@ import java.util.*
 data class QuestionFilter(
     val jobId: UUID? = null,
     val difficulty: QuestionDifficulty? = null,
+    val searchKeyword: String? = null,
 )

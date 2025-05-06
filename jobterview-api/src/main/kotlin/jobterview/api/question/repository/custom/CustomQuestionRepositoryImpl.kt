@@ -26,6 +26,9 @@ class CustomQuestionRepositoryImpl(
                 filter.difficulty?.let {
                     and(question.difficulty.eq(it))
                 }
+                filter.searchKeyword?.let {
+                    and(question.content.containsIgnoreCase(it))
+                }
             }
 
         val orderSpecifiers = pageable.sort.mapNotNull { order ->

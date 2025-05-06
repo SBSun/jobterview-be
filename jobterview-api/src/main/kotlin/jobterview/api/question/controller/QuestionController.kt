@@ -28,6 +28,7 @@ class QuestionController(
     fun getQuestions(
         @RequestParam jobId: UUID?,
         @RequestParam difficulty: String?,
+        @RequestParam searchKeyword: String?,
         @RequestParam(defaultValue = "0") @Min(0) page: Int,
         @RequestParam(defaultValue = "10") @Min(1) @Max(100) size: Int,
         @RequestParam(defaultValue = "createdAt") sort: String,
@@ -37,6 +38,7 @@ class QuestionController(
             QuestionFilter(
                 jobId = jobId,
                 difficulty = difficulty?.let { QuestionDifficulty.fromCode(it) },
+                searchKeyword = searchKeyword
             )
 
         val sortDirection = Sort.Direction.fromOptionalString(direction.uppercase()).orElse(Sort.Direction.DESC)
