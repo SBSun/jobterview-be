@@ -2,10 +2,17 @@ package jobterview.api.question.controller
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
 import jobterview.api.question.response.QuestionDetailResponse
 import jobterview.api.question.response.QuestionResponse
 import jobterview.api.question.service.QuestionService
+import jobterview.api.question.vo.QuestionFilter
 import jobterview.common.response.ApiResponse
+import jobterview.domain.question.enums.QuestionDifficulty
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -16,10 +23,28 @@ class QuestionController(
     private val questionService: QuestionService
 ){
 
-    @Operation(summary = "직업별 질문 조회")
+    @Operation(summary = "질문 목록 조회")
     @GetMapping
-    fun getQuestionsByJob(@RequestParam jobId: UUID): ApiResponse<List<QuestionResponse>> {
-        return ApiResponse.create(questionService.getQuestionsByJob(jobId))
+    fun getQuestions(
+        @RequestParam jobId: UUID?,
+        @RequestParam difficulty: String?,
+        @RequestParam searchKeyword: String?,
+        @RequestParam(defaultValue = "0") @Min(0) page: Int,
+        @RequestParam(defaultValue = "10") @Min(1) @Max(100) size: Int,
+        @RequestParam(defaultValue = "createdAt") sort: String,
+        @RequestParam(defaultValue = "desc") direction: String,
+    ): ApiResponse<Page<QuestionResponse>> {
+        val filter =
+            QuestionFilter(
+                jobId = jobId,
+                difficulty = difficulty?.let { QuestionDifficulty.fromCode(it) },
+                searchKeyword = searchKeyword
+            )
+
+        val sortDirection = Sort.Direction.fromOptionalString(direction.uppercase()).orElse(Sort.Direction.DESC)
+        val pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort))
+
+        return ApiResponse.create(questionService.getQuestions(filter, pageable))
     }
 
     @Operation(summary = "질문 상세 조회")

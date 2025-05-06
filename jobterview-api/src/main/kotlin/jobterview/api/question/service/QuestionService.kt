@@ -1,23 +1,28 @@
 package jobterview.api.question.service
 
+import jobterview.api.question.repository.QuestionRepository
 import jobterview.api.question.response.QuestionDetailResponse
 import jobterview.api.question.response.QuestionResponse
+import jobterview.api.question.vo.QuestionFilter
 import jobterview.domain.question.Question
 import jobterview.domain.question.exception.QuestionException
-import jobterview.domain.question.repository.QuestionJpaRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
 class QuestionService (
-    private val questionRepository: QuestionJpaRepository
+    private val questionRepository: QuestionRepository
 ){
 
     @Transactional(readOnly = true)
-    fun getQuestionsByJob(jobId: UUID): List<QuestionResponse> {
-        return questionRepository.findAllByJob_Id(jobId)
-            .map { QuestionResponse(it) }
+    fun getQuestions(
+        filter: QuestionFilter,
+        pageable: PageRequest,
+    ): Page<QuestionResponse> {
+        return questionRepository.getQuestions(filter, pageable)
     }
 
     @Transactional(readOnly = true)

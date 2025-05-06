@@ -15,7 +15,7 @@ class CustomQuestionRepositoryImpl(
         return queryFactory
             .selectFrom(question)
             .where(
-                question.job().id.eq(jobId),
+                question.jobId.eq(jobId),
                 question.id.notIn(
                     JPAExpressions
                         .select(sentQuestion.question().id)
