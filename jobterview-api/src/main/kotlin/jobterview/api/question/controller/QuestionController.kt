@@ -11,6 +11,8 @@ import jobterview.api.question.vo.QuestionFilter
 import jobterview.common.response.ApiResponse
 import jobterview.domain.question.enums.QuestionDifficulty
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
@@ -28,6 +30,8 @@ class QuestionController(
         @RequestParam difficulty: String?,
         @RequestParam(defaultValue = "0") @Min(0) page: Int,
         @RequestParam(defaultValue = "10") @Min(1) @Max(100) size: Int,
+        @RequestParam(defaultValue = "createdAt") sort: String,
+        @RequestParam(defaultValue = "desc") direction: String,
     ): ApiResponse<Page<QuestionResponse>> {
         val filter =
             QuestionFilter(
@@ -35,7 +39,10 @@ class QuestionController(
                 difficulty = difficulty?.let { QuestionDifficulty.fromCode(it) },
             )
 
-        return ApiResponse.create(questionService.getQuestions(filter, page, size))
+        val sortDirection = Sort.Direction.fromOptionalString(direction.uppercase()).orElse(Sort.Direction.DESC)
+        val pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort))
+
+        return ApiResponse.create(questionService.getQuestions(filter, pageable))
     }
 
     @Operation(summary = "질문 상세 조회")

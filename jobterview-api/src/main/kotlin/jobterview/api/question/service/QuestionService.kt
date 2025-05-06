@@ -20,11 +20,8 @@ class QuestionService (
     @Transactional(readOnly = true)
     fun getQuestions(
         filter: QuestionFilter,
-        page: Int,
-        size: Int
+        pageable: PageRequest,
     ): Page<QuestionResponse> {
-        val pageable = PageRequest.of(page, size)
-
         return questionRepository.getQuestions(filter, pageable)
     }
 
