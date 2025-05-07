@@ -1,10 +1,13 @@
 package jobterview.api.subscription.service
 
+import com.fasterxml.uuid.Generators
 import jobterview.api.job.service.JobService
 import jobterview.api.subscription.request.SubscriptRequest
 import jobterview.api.subscription.request.VerifyEmailRequest
+import jobterview.domain.mail.MailToken
 import jobterview.domain.mail.MailVerification
 import jobterview.domain.mail.exception.MailVerificationException
+import jobterview.domain.mail.repository.MailTokenJpaRepository
 import jobterview.domain.mail.repository.MailVerificationJpaRepository
 import jobterview.domain.subscription.Subscription
 import jobterview.domain.subscription.exception.SubscriptionException
@@ -25,6 +28,7 @@ class SubscriptionService (
     private val verifyMailTemplate: VerifyMailTemplate,
     private val subscriptionRepository: SubscriptionJpaRepository,
     private val mailVerificationRepository: MailVerificationJpaRepository,
+    private val mailTokenRepository: MailTokenJpaRepository,
     private val jobService: JobService
 ){
 
@@ -58,6 +62,15 @@ class SubscriptionService (
         )
 
         subscriptionRepository.save(subscription)
+
+        // 첫 구독일 경우, 메일 인증 토큰 생성
+        if (!mailTokenRepository.existsById(request.email)) {
+            val mailToken = MailToken(
+                email = request.email,
+                token = Generators.timeBasedEpochGenerator().generate().toString()
+            )
+            mailTokenRepository.save(mailToken)
+        }
     }
 
     private fun verifyCode(email: String, jobId: UUID, code: String) {

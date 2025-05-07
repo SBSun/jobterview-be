@@ -8,4 +8,6 @@ import org.springframework.data.domain.Pageable
 interface CustomQuestionRepository {
 
     fun getQuestions(filter: QuestionFilter, pageable: Pageable): Page<QuestionResponse>
+
+    fun getQuestionsByEmail(email: String, filter: QuestionFilter, pageable: Pageable): Page<QuestionResponse>
 }
