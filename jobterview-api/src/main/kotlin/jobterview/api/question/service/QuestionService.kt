@@ -15,7 +15,7 @@ import java.util.*
 @Service
 class QuestionService (
     private val questionRepository: QuestionRepository
-){
+) {
 
     @Transactional(readOnly = true)
     fun getQuestions(

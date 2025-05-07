@@ -9,7 +9,6 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import jobterview.domain.common.audit.CreatedTimeEntity
-import jobterview.domain.job.Job
 import jobterview.domain.subscription.Subscription
 import org.hibernate.annotations.Comment
 import java.util.*
@@ -25,6 +24,9 @@ class SentQuestion (
     @Column(nullable = false)
     @Comment("이메일")
     var email: String,
+
+    @Column(name = "question_id", insertable = false, updatable = false)
+    val questionId: UUID,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
