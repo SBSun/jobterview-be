@@ -4,6 +4,7 @@ import jobterview.api.job.response.JobResponse
 import jobterview.domain.job.Job
 import jobterview.domain.job.exception.JobException
 import jobterview.domain.job.repository.JobJpaRepository
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.*
@@ -11,7 +12,7 @@ import java.util.*
 @Service
 class JobService (
     private val jobRepository: JobJpaRepository
-){
+) {
 
     @Transactional(readOnly = true)
     fun getById(id: UUID): Job {
@@ -20,6 +21,7 @@ class JobService (
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = ["jobs"], key = "'jobs'")
     fun getJobs(): List<JobResponse> {
         return jobRepository.findAll()
             .map { JobResponse(it) }
