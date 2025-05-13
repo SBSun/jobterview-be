@@ -55,6 +55,7 @@ class SendQuestionMailJobConfig (
                         val sentQuestion = SentQuestion(
                             email = subscription.email,
                             question = question,
+                            questionId = question.id,
                             subscription = subscription
                         )
                         sentQuestionRepository.save(sentQuestion)
