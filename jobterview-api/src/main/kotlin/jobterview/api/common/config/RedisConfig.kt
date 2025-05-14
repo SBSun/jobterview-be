@@ -20,7 +20,6 @@ import java.time.Duration
 class RedisConfig (
     @Value("\${spring.data.redis.host}")
     private val host: String,
-
     @Value("\${spring.data.redis.port}")
     private val port: Int
 ){

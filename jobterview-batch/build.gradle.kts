@@ -4,7 +4,7 @@ plugins {
 
 dependencies {
     implementation(project(":jobterview-domain"))
-    implementation(project(":jobterview-mail"))
+    implementation(project(":jobterview-mq"))
 
     implementation("org.springframework.boot:spring-boot-starter-batch")
     testImplementation("org.springframework.batch:spring-batch-test")

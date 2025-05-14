@@ -1,0 +1,14 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+    virtual-host: /
+
+    template:
+      exchange: jobterview.exchange
+
+    listener:
+      direct:
+        prefetch: 1 # 동시 처리 메시지 수 제한
