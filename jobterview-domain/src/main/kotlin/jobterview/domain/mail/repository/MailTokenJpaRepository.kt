@@ -4,4 +4,6 @@ import jobterview.domain.mail.MailToken
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MailTokenJpaRepository : JpaRepository<MailToken, String> {
+
+    fun existsByEmailAndToken(email: String, token: String): Boolean
 }
