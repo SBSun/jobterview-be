@@ -4,13 +4,14 @@ spring:
     group:
       local:
         - domain
+        - mq
 
   config:
     import: optional:classpath:env/env.properties
 
   batch:
     job:
-      enabled: true
+      enabled: false
 
   mail:
     host: smtp.gmail.com

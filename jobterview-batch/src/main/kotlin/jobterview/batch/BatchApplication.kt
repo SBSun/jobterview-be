@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 import org.springframework.scheduling.annotation.EnableScheduling
 
 @SpringBootApplication(
-    scanBasePackages = ["jobterview.batch", "jobterview.domain", "jobterview.mail", "jobterview.common"],
+    scanBasePackages = ["jobterview.batch", "jobterview.domain", "jobterview.mail", "jobterview.mq", "jobterview.common"],
 )
 @EnableJpaRepositories(basePackages = ["jobterview.batch"])
 @EnableScheduling
