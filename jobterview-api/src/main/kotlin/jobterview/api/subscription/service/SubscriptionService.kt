@@ -4,8 +4,10 @@ import com.fasterxml.uuid.Generators
 import jobterview.api.job.service.JobService
 import jobterview.api.subscription.request.SubscriptRequest
 import jobterview.api.subscription.request.VerifyEmailRequest
+import jobterview.api.subscription.response.SubscriptionResponse
 import jobterview.domain.mail.MailToken
 import jobterview.domain.mail.MailVerification
+import jobterview.domain.mail.exception.MailTokenException
 import jobterview.domain.mail.exception.MailVerificationException
 import jobterview.domain.mail.repository.MailTokenJpaRepository
 import jobterview.domain.mail.repository.MailVerificationJpaRepository
@@ -22,7 +24,6 @@ import java.util.*
 
 
 @Service
-@Transactional
 class SubscriptionService (
     private val mailSender: MailSender,
     private val verifyMailTemplate: VerifyMailTemplate,
@@ -30,8 +31,9 @@ class SubscriptionService (
     private val mailVerificationRepository: MailVerificationJpaRepository,
     private val mailTokenRepository: MailTokenJpaRepository,
     private val jobService: JobService
-){
+) {
 
+    @Transactional
     fun sendVerifyEmail(request: VerifyEmailRequest) {
         jobService.verifyExist(request.jobId)
         if (subscriptionRepository.existsByEmailAndJob_Id(request.email, request.jobId)) {
@@ -53,6 +55,7 @@ class SubscriptionService (
         mailVerificationRepository.save(mailVerification)
     }
 
+    @Transactional
     fun subscript(request: SubscriptRequest) {
         verifyCode(request.email, request.jobId, request.code)
 
@@ -73,6 +76,24 @@ class SubscriptionService (
         }
     }
 
+    @Transactional(readOnly = true)
+    fun getSubscriptions(email: String, token: String): List<SubscriptionResponse> {
+        verifyToken(email, token)
+
+        return subscriptionRepository.findAllByEmailOrderByCreatedAtDesc(email)
+            .map { SubscriptionResponse(it) }
+    }
+
+    @Transactional
+    fun unsubscribe(id: UUID, email: String, token: String) {
+        verifyToken(email, token)
+
+        val subscription = subscriptionRepository.findByIdAndEmail(id, email)
+            ?: throw SubscriptionException.notFound()
+
+        subscriptionRepository.delete(subscription)
+    }
+
     private fun verifyCode(email: String, jobId: UUID, code: String) {
         val mailVerification = mailVerificationRepository.findTopByEmailAndJobIdOrderByCreatedAtDesc(email, jobId)
             .orElseThrow { MailVerificationException.invalid() }
@@ -85,6 +106,12 @@ class SubscriptionService (
             mailVerification.verified()
         } else {
             throw MailVerificationException.mismatch()
+        }
+    }
+
+    private fun verifyToken(email: String, token: String) {
+        if (!mailTokenRepository.existsByEmailAndToken(email, token)) {
+            throw MailTokenException.invalid()
         }
     }
 
