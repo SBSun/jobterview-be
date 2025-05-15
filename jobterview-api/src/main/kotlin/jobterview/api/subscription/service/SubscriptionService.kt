@@ -31,7 +31,7 @@ class SubscriptionService (
     private val mailVerificationRepository: MailVerificationJpaRepository,
     private val mailTokenRepository: MailTokenJpaRepository,
     private val jobService: JobService
-){
+) {
 
     @Transactional
     fun sendVerifyEmail(request: VerifyEmailRequest) {
@@ -82,6 +82,16 @@ class SubscriptionService (
 
         return subscriptionRepository.findAllByEmailOrderByCreatedAtDesc(email)
             .map { SubscriptionResponse(it) }
+    }
+
+    @Transactional
+    fun unsubscribe(id: UUID, email: String, token: String) {
+        verifyToken(email, token)
+
+        val subscription = subscriptionRepository.findByIdAndEmail(id, email)
+            ?: throw SubscriptionException.notFound()
+
+        subscriptionRepository.delete(subscription)
     }
 
     private fun verifyCode(email: String, jobId: UUID, code: String) {

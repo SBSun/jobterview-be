@@ -11,4 +11,6 @@ interface SubscriptionJpaRepository : JpaRepository<Subscription, UUID> {
 
     @EntityGraph(attributePaths = ["job"])
     fun findAllByEmailOrderByCreatedAtDesc(email: String): List<Subscription>
+
+    fun findByIdAndEmail(id: UUID, email: String): Subscription?
 }
