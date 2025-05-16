@@ -2,6 +2,7 @@ HELP.md
 .gradle
 build/
 db/
+logs/
 rabbitmq_data/
 rabbitmq_log/
 redis.conf
