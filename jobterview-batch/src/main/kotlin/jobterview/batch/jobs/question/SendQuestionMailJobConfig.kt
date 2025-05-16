@@ -3,6 +3,7 @@ package jobterview.batch.jobs.question
 import jobterview.batch.publisher.MailPublisher
 import jobterview.batch.question.repository.QuestionRepository
 import jobterview.batch.question.repository.SentQuestionRepository
+import jobterview.common.utils.LogUtil
 import jobterview.domain.question.SentQuestion
 import jobterview.domain.subscription.Subscription
 import jobterview.domain.subscription.repository.SubscriptionJpaRepository
@@ -49,7 +50,7 @@ class SendQuestionMailJobConfig (
                         val to = subscription.email
                         val subject = "오늘의 면접 질문"
                         val text = questionMailTemplate.render(mapOf("question" to question.content))
-                        println("오늘의 면접 질문: ${question.content}")
+                        LogUtil.info("오늘의 면접 질문: ${question.content}")
 
                         mailPublisher.sendMail(to, subject, text)
 
@@ -61,7 +62,7 @@ class SendQuestionMailJobConfig (
                         )
                         sentQuestionRepository.save(sentQuestion)
                     } else {
-                        println("질문 없음: jobId=${job.id}")
+                        LogUtil.info("질문 없음: jobId=${job.id}")
                     }
                 }
             }

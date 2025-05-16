@@ -5,6 +5,9 @@ spring:
       local:
         - domain
         - security
+      dev:
+        - domain
+        - security
 
   config:
     import: optional:classpath:env/env.properties
@@ -14,7 +17,7 @@ spring:
 
   mail:
     host: smtp.gmail.com
-    port: 587
+    port: 58
     username: ${MAIL_USERNAME}
     password: ${MAIL_PASSWORD}
     properties:
@@ -43,3 +46,19 @@ logging:
     org.springframework.security: INFO
     org.springframework.cache.interceptor.CacheInterceptor: TRACE
     org.springframework.data.redis: DEBUG
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+service:
+  log:
+    path: ./logs
+    info:
+      path: ./logs/info
+    err:
+      path: ./logs/err
+    zip:
+      path: ./logs/backup

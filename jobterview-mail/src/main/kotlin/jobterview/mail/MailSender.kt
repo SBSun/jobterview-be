@@ -1,5 +1,6 @@
 package jobterview.mail
 
+import jobterview.common.utils.LogUtil
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.scheduling.annotation.Async
@@ -22,7 +23,7 @@ class MailSender(
 
             mailSender.send(message)
         } catch (e: Exception) {
-            println("메일 전송 실패: ${e.message}")
+            LogUtil.error("메일 전송 실패: ${e.message}")
         }
     }
 }

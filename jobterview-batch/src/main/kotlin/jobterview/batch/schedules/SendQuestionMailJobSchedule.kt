@@ -1,5 +1,6 @@
 package jobterview.batch.schedules
 
+import jobterview.common.utils.LogUtil
 import org.springframework.batch.core.Job
 import org.springframework.batch.core.JobParametersBuilder
 import org.springframework.batch.core.launch.JobLauncher
@@ -19,11 +20,11 @@ class SendQuestionMailJobSchedule(
             .toJobParameters()
 
         try {
-            println("메일 전송 Job 시작")
+            LogUtil.info("메일 전송 Job 시작")
             jobLauncher.run(sendQuestionMailJob, jobParameters)
-            println("메일 전송 Job 완료")
+            LogUtil.info("메일 전송 Job 완료")
         } catch (e: Exception) {
-            println("메일 전송 Job 실패: ${e.message}")
+            LogUtil.error("메일 전송 Job 실패: ${e.message}")
         }
     }
 }
