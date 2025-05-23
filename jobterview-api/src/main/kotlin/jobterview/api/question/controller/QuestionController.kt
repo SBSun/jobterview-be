@@ -4,9 +4,9 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
+import jobterview.api.question.query.service.usecase.QuestionQueryUseCase
 import jobterview.api.question.response.QuestionDetailResponse
 import jobterview.api.question.response.QuestionResponse
-import jobterview.api.question.service.QuestionService
 import jobterview.api.question.vo.QuestionFilter
 import jobterview.common.response.ApiResponse
 import jobterview.domain.question.enums.QuestionDifficulty
@@ -20,7 +20,7 @@ import java.util.*
 @RequestMapping("/questions")
 @Tag(name = "Question", description = "면접 질문 API")
 class QuestionController(
-    private val questionService: QuestionService
+    private val questionQueryUseCase: QuestionQueryUseCase
 ){
 
     @Operation(summary = "질문 목록 조회")
@@ -44,12 +44,12 @@ class QuestionController(
         val sortDirection = Sort.Direction.fromOptionalString(direction.uppercase()).orElse(Sort.Direction.DESC)
         val pageable = PageRequest.of(page, size, Sort.by(sortDirection, sort))
 
-        return ApiResponse.create(questionService.getQuestions(filter, pageable))
+        return ApiResponse.create(questionQueryUseCase.getQuestions(filter, pageable))
     }
 
-    @Operation(summary = "질문 상세 조회")
+    @Operation(summary = "질문 조회")
     @GetMapping("/{id}")
     fun getDetail(@PathVariable id: UUID): ApiResponse<QuestionDetailResponse> {
-        return ApiResponse.create(questionService.getDetail(id))
+        return ApiResponse.create(questionQueryUseCase.getDetail(id))
     }
 }
